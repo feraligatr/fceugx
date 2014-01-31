@@ -1148,7 +1148,7 @@ static void ControllerWindow()
 	delete(settingText);
 }
 
-extern u16 fceu_expected_fps;
+extern u16 fceu_speed_multiplier;
 
 /****************************************************************************
  * MenuGame
@@ -1531,10 +1531,9 @@ static int MenuGame()
 		}
 		else if(speedUpBtn.GetState() == STATE_CLICKED)
 		{
-			u16 full_fps = ((FCEUI_GetCurrentVidSystem(NULL, NULL) == 1) ? 50 : 60);
-			fceu_expected_fps *= 2;
-			if (fceu_expected_fps > full_fps)
-				fceu_expected_fps = full_fps;
+			fceu_speed_multiplier >>= 1;
+			if (fceu_speed_multiplier <= 0)
+				fceu_speed_multiplier = 1;
 
 			menu = MENU_EXIT;
 
@@ -1557,9 +1556,9 @@ static int MenuGame()
 		}
 		else if(speedDownBtn.GetState() == STATE_CLICKED)
 		{
-			fceu_expected_fps /= 2;
-			if (fceu_expected_fps <= 0)
-				fceu_expected_fps = 1;
+			fceu_speed_multiplier <<= 1;
+			if (fceu_speed_multiplier > 32)
+				fceu_speed_multiplier = 32;
 
 			menu = MENU_EXIT;
 

@@ -199,17 +199,22 @@ static GXRModeObj *tvmodes[2] = {
  * change frame timings depending on whether ROM is NTSC or PAL
  ***************************************************************************/
 
-u16 fceu_expected_fps;
+u16 fceu_speed_multiplier = 2;
+static u32 normaldiff;
 
 void setFrameTimer()
 {
+	u16 expected_fps;
 	if (FCEUI_GetCurrentVidSystem(NULL, NULL) == 1) // PAL
-		fceu_expected_fps = 50; // 50hz
+		expected_fps = 50; // 50hz
 	else
-		fceu_expected_fps = 60; // 60hz
+		expected_fps = 60; // 60hz
 
-	fceu_expected_fps /= 2;
-
+	expected_fps /= fceu_speed_multiplier;
+	if (expected_fps <= 0)
+		expected_fps = 1;
+	normaldiff = 1000000 / expected_fps;
+	
 	prev = gettime();
 }
 
@@ -225,8 +230,6 @@ void SyncSpeed()
 	now = gettime();
 	u32 diff = diff_usec(prev, now);
 
-	u32 normaldiff = 1000000 / fceu_expected_fps;
-	
 	if(turbomode)
 	{
 		// do nothing
