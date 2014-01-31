@@ -199,28 +199,33 @@ static GXRModeObj *tvmodes[2] = {
  * change frame timings depending on whether ROM is NTSC or PAL
  ***************************************************************************/
 
-static u32 normaldiff;
+u16 fceu_expected_fps;
 
 void setFrameTimer()
 {
 	if (FCEUI_GetCurrentVidSystem(NULL, NULL) == 1) // PAL
-		normaldiff = 20000; // 50hz
+		fceu_expected_fps = 50; // 50hz
 	else
-		normaldiff = 16667; // 60hz
+		fceu_expected_fps = 60; // 60hz
+
+	fceu_expected_fps /= 2;
+
 	prev = gettime();
 }
 
 void SyncSpeed()
 {
 	// same timing as game - no adjustment necessary 
-	if((vmode_60hz && normaldiff == 16667) || (!vmode_60hz && normaldiff == 20000)) 
-		if (!shutter_3d_mode && !anaglyph_3d_mode) return; //CAK: But don't exit if in a 30/25Hz 3D mode.
+	//if((vmode_60hz && normaldiff == 16667) || (!vmode_60hz && normaldiff == 20000)) 
+	//	if (!shutter_3d_mode && !anaglyph_3d_mode) return; //CAK: But don't exit if in a 30/25Hz 3D mode.
 
 	//CAK: Note that the 3D modes (except Pulfrich) still call this function at 60/50Hz, but half the 
 	//     time there is no video rendering to go with it, so we need some delays.
 
 	now = gettime();
 	u32 diff = diff_usec(prev, now);
+
+	u32 normaldiff = 1000000 / fceu_expected_fps;
 	
 	if(turbomode)
 	{
