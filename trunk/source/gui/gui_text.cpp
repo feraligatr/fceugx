@@ -213,6 +213,7 @@ int GuiText::GetTextWidth()
 
 void GuiText::SetWrap(bool w, int width)
 {
+	return;
 	wrap = w;
 	maxWidth = width;
 
