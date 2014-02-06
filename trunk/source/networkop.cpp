@@ -41,6 +41,7 @@ bool updateFound = false; // true if an app update was found
 
 void UpdateCheck()
 {
+	return;
 	// we only check for an update if we have internet + SD/USB
 	if(updateChecked || !networkInit)
 		return;
@@ -311,7 +312,7 @@ bool InitializeNetwork(bool silent)
 		{
 			usleep(50 * 1000);
 
-			if(diff_sec(start, gettime()) > 10) // wait for 10 seconds max for net init
+			if(diff_sec(start, gettime()) > 1) // wait for 1 second max for net init
 				break;
 		}
 #else
