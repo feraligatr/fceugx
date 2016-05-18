@@ -24,6 +24,8 @@ static int whichab = 0;
 static int IsPlaying = 0;
 static int samplerate;
 
+extern u16 fceu_speed_multiplier;
+
 /****************************************************************************
  * MixerCollect
  *
@@ -35,14 +37,21 @@ static int MixerCollect( u8 *outbuffer, int len )
 	u32 *dst = (u32 *)outbuffer;
 	u32 *src = (u32 *)mixbuffer;
 	int done = 0;
+	int multiplier_counter = 0;
 
 	// Always clear output buffer
 	memset(outbuffer, 0, len);
 
 	while ( ( mixtail != mixhead ) && ( done < len ) )
 	{
-		*dst++ = src[mixtail++];
-		if (mixtail == 4000) mixtail = 0;
+		*dst++ = src[mixtail];
+		multiplier_counter ++;
+		if (multiplier_counter == fceu_speed_multiplier)
+		{
+			multiplier_counter = 0;
+			mixtail ++;
+			if (mixtail == 4000) mixtail = 0;
+		}
 		done += 4;
 	}
 

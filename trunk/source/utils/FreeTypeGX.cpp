@@ -38,6 +38,18 @@ void InitFreeType(uint8_t* fontBuffer, FT_Long bufferSize)
 		fontSystem[i] = NULL;
 }
 
+/* Will crash
+void InitFreeTypeWithPath(const char* fontFilename)
+{
+	FT_Init_FreeType(&ftLibrary);
+	FT_New_Face(ftLibrary, fontFilename, 0, &ftFace);
+	ftSlot = ftFace->glyph;
+
+	for(int i=0; i<50; i++)
+		fontSystem[i] = NULL;
+}
+*/
+
 void DeinitFreeType()
 {
 	ClearFontData();

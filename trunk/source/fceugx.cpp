@@ -379,6 +379,7 @@ int main(int argc, char *argv[])
 	DefaultSettings(); // Set defaults
 	InitialiseAudio();
 	InitFreeType((u8*)font_ttf, font_ttf_size); // Initialize font system
+	//InitFreeTypeWithPath("sd:/fceugx/font.ttf"); // Initialize font system
 	gameScreenPng = (u8 *)malloc(512*1024);
 	browserList = (BROWSERENTRY *)malloc(sizeof(BROWSERENTRY)*MAX_BROWSER_SIZE);
 	InitGUIThreads();
