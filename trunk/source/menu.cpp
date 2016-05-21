@@ -911,7 +911,7 @@ static int MenuGameSelection()
 	int i;
 	bool res;
 
-	GuiText titleTxt("Choose Game", 26, (GXColor){255, 255, 255, 255});
+	GuiText titleTxt("选择游戏", 26, (GXColor){255, 255, 255, 255});
 	titleTxt.SetAlignment(ALIGN_LEFT, ALIGN_TOP);
 	titleTxt.SetPosition(50,50);
 
@@ -944,7 +944,7 @@ static int MenuGameSelection()
 	settingsBtn.SetTrigger(trig2);
 	settingsBtn.SetEffectGrow();
 
-	GuiText exitBtnTxt("Exit", 22, (GXColor){0, 0, 0, 255});
+	GuiText exitBtnTxt("退出", 22, (GXColor){0, 0, 0, 255});
 	GuiImage exitBtnIcon(&iconHome);
 	exitBtnIcon.SetAlignment(ALIGN_LEFT, ALIGN_MIDDLE);
 	exitBtnIcon.SetPosition(14,0);
@@ -1209,7 +1209,7 @@ static int MenuGame()
 	GuiTrigger trigHome;
 	trigHome.SetButtonOnlyTrigger(-1, WPAD_BUTTON_HOME | WPAD_CLASSIC_BUTTON_HOME, 0);
 
-	GuiText speedUpBtnTxt("+++++", 22, (GXColor){0, 0, 0, 255});
+	GuiText speedUpBtnTxt("加快速度", 22, (GXColor){0, 0, 0, 255});
 	GuiImage speedUpBtnImg(&btnOutline);
 	GuiImage speedUpBtnImgOver(&btnOutlineOver);
 	GuiButton speedUpBtn(btnOutline.GetWidth(), btnOutline.GetHeight());
@@ -1224,7 +1224,7 @@ static int MenuGame()
 	speedUpBtn.SetTrigger(trig2);
 	speedUpBtn.SetEffectGrow();
 
-	GuiText speedDownBtnTxt("- - - - -", 22, (GXColor){0, 0, 0, 255});
+	GuiText speedDownBtnTxt("减慢速度", 22, (GXColor){0, 0, 0, 255});
 	GuiImage speedDownBtnImg(&btnOutline);
 	GuiImage speedDownBtnImgOver(&btnOutlineOver);
 	GuiButton speedDownBtn(btnOutline.GetWidth(), btnOutline.GetHeight());
@@ -1239,7 +1239,7 @@ static int MenuGame()
 	speedDownBtn.SetTrigger(trig2);
 	speedDownBtn.SetEffectGrow();
 
-	GuiText exitBtnTxt("Exit", 22, (GXColor){0, 0, 0, 255});
+	GuiText exitBtnTxt("退出", 22, (GXColor){0, 0, 0, 255});
 	GuiImage exitBtnImg(&btnLargeOutline);
 	GuiImage exitBtnImgOver(&btnLargeOutlineOver);
 	GuiButton exitBtn(btnLargeOutline.GetWidth(), btnLargeOutline.GetHeight());
@@ -1254,12 +1254,12 @@ static int MenuGame()
 	exitBtn.SetTrigger(trig2);
 	exitBtn.SetEffectGrow();
 
-	GuiText quickSaveBtnTxt("Quick Save", 22, (GXColor){0, 0, 0, 255});
+	GuiText quickSaveBtnTxt("快速保存", 22, (GXColor){0, 0, 0, 255});
 	GuiImage quickSaveBtnImg(&btnLargeOutline);
 	GuiImage quickSaveBtnImgOver(&btnLargeOutlineOver);
 	GuiButton quickSaveBtn(btnLargeOutline.GetWidth(), btnLargeOutline.GetHeight());
 	quickSaveBtn.SetAlignment(ALIGN_CENTRE, ALIGN_TOP);
-	quickSaveBtn.SetPosition(-200, 180);
+	quickSaveBtn.SetPosition(-200, 190);
 	quickSaveBtn.SetLabel(&quickSaveBtnTxt);
 	quickSaveBtn.SetImage(&quickSaveBtnImg);
 	quickSaveBtn.SetImageOver(&quickSaveBtnImgOver);
@@ -1269,12 +1269,12 @@ static int MenuGame()
 	quickSaveBtn.SetTrigger(trig2);
 	quickSaveBtn.SetEffectGrow();
 
-	GuiText quickLoadBtnTxt("Quick Load", 22, (GXColor){0, 0, 0, 255});
+	GuiText quickLoadBtnTxt("快速读取", 22, (GXColor){0, 0, 0, 255});
 	GuiImage quickLoadBtnImg(&btnLargeOutline);
 	GuiImage quickLoadBtnImgOver(&btnLargeOutlineOver);
 	GuiButton quickLoadBtn(btnLargeOutline.GetWidth(), btnLargeOutline.GetHeight());
 	quickLoadBtn.SetAlignment(ALIGN_CENTRE, ALIGN_TOP);
-	quickLoadBtn.SetPosition(200, 180);
+	quickLoadBtn.SetPosition(200, 190);
 	quickLoadBtn.SetLabel(&quickLoadBtnTxt);
 	quickLoadBtn.SetImage(&quickLoadBtnImg);
 	quickLoadBtn.SetImageOver(&quickLoadBtnImgOver);
@@ -1301,7 +1301,7 @@ static int MenuGame()
 	saveBtn.SetTrigger(trig2);
 	saveBtn.SetEffectGrow();
 
-	GuiText loadBtnTxt("Load", 22, (GXColor){0, 0, 0, 255});
+	GuiText loadBtnTxt("读取", 22, (GXColor){0, 0, 0, 255});
 	GuiImage loadBtnImg(&btnCloseOutline);
 	GuiImage loadBtnImgOver(&btnCloseOutlineOver);
 	GuiImage loadBtnIcon(&iconLoad);
@@ -1353,7 +1353,7 @@ static int MenuGame()
 	gameSettingsBtn.SetTrigger(trig2);
 	gameSettingsBtn.SetEffectGrow();
 
-	GuiText mainmenuBtnTxt("Main Menu", 22, (GXColor){0, 0, 0, 255});
+	GuiText mainmenuBtnTxt("换其他游戏", 22, (GXColor){0, 0, 0, 255});
 	GuiImage mainmenuBtnImg(&btnOutline);
 	GuiImage mainmenuBtnImgOver(&btnOutlineOver);
 	GuiButton mainmenuBtn(btnOutline.GetWidth(), btnOutline.GetHeight());
@@ -1368,7 +1368,7 @@ static int MenuGame()
 	mainmenuBtn.SetTrigger(trig2);
 	mainmenuBtn.SetEffectGrow();
 
-	GuiText closeBtnTxt("Close", 20, (GXColor){0, 0, 0, 255});
+	GuiText closeBtnTxt("返回游戏", 20, (GXColor){0, 0, 0, 255});
 	GuiImage closeBtnImg(&btnCloseOutline);
 	GuiImage closeBtnImgOver(&btnCloseOutlineOver);
 	GuiButton closeBtn(btnCloseOutline.GetWidth(), btnCloseOutline.GetHeight());
