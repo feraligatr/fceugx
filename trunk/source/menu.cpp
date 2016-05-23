@@ -1074,13 +1074,13 @@ static int QuickSaveOrLoad (int action)
 	}
 	if (action == 1) //save
 	{
-		return SaveState(filepath, NOTSILENT);
+		return SaveState(filepath, SILENT);
 	}
 	else if (action == 0) // load
 	{
 		saveNum --;
 		MakeFilePath(filepath, FILE_STATE, romFilename, saveNum);
-		return LoadState(filepath, NOTSILENT);
+		return LoadState(filepath, SILENT);
 	}
 	return -1;
 }
@@ -1520,15 +1520,15 @@ static int MenuGame()
 		}
 		#endif
 
-		if(saveBtn.GetState() == STATE_CLICKED)
+		if(saveBtn.IsClickedByHand())
 		{
 			menu = MENU_GAME_SAVE;
 		}
-		else if(loadBtn.GetState() == STATE_CLICKED)
+		else if(loadBtn.IsClickedByHand())
 		{
 			menu = MENU_GAME_LOAD;
 		}
-		else if(resetBtn.GetState() == STATE_CLICKED)
+		else if(resetBtn.IsClickedByHand())
 		{
 			if (WindowPrompt("Reset Game", "Are you sure that you want to reset this game? Any unsaved progress will be lost.", "OK", "Cancel"))
 			{
@@ -1536,30 +1536,27 @@ static int MenuGame()
 				menu = MENU_EXIT;
 			}
 		}
-		else if(gameSettingsBtn.GetState() == STATE_CLICKED)
+		else if(gameSettingsBtn.IsClickedByHand())
 		{
 			menu = MENU_GAMESETTINGS;
 		}
-		else if(mainmenuBtn.GetState() == STATE_CLICKED)
+		else if(mainmenuBtn.IsClickedByHand())
 		{
-			if (WindowPrompt("Quit Game", "Quit this game? Any unsaved progress will be lost.", "OK", "Cancel"))
-			{
-				HaltGui();
-				mainWindow->Remove(gameScreenImg);
-				delete gameScreenImg;
-				delete gameScreen;
-				gameScreen = NULL;
-				free(gameScreenPng);
-				gameScreenPng = NULL;
-				gameScreenImg = new GuiImage(screenwidth, screenheight, (GXColor){240, 225, 230, 255});
-				gameScreenImg->ColorStripe(10);
-				mainWindow->Insert(gameScreenImg, 0);
-				ResumeGui();
-				#ifndef NO_SOUND
-				bgMusic->Play(); // startup music
-				#endif
-				menu = MENU_GAMESELECTION;
-			}
+			HaltGui();
+			mainWindow->Remove(gameScreenImg);
+			delete gameScreenImg;
+			delete gameScreen;
+			gameScreen = NULL;
+			free(gameScreenPng);
+			gameScreenPng = NULL;
+			gameScreenImg = new GuiImage(screenwidth, screenheight, (GXColor){240, 225, 230, 255});
+			gameScreenImg->ColorStripe(10);
+			mainWindow->Insert(gameScreenImg, 0);
+			ResumeGui();
+			#ifndef NO_SOUND
+			bgMusic->Play(); // startup music
+			#endif
+			menu = MENU_GAMESELECTION;
 		}
 		else if(closeBtn.GetState() == STATE_CLICKED)
 		{
@@ -1583,11 +1580,11 @@ static int MenuGame()
 
 			usleep(350000); // wait for effects to finish
 		}
-		else if(exitBtn.GetState() == STATE_CLICKED)
+		else if(exitBtn.IsClickedByHand())
 		{
 			ExitRequested = true;
 		}
-		else if(speedUpBtn.GetState() == STATE_CLICKED)
+		else if(speedUpBtn.IsClickedByHand())
 		{
 			fceu_speed_multiplier >>= 1;
 			if (fceu_speed_multiplier <= 0)
@@ -1612,7 +1609,7 @@ static int MenuGame()
 			w.SetEffect(EFFECT_FADE, -15);
 			usleep(350000); // wait for effects to finish
 		}
-		else if(speedDownBtn.GetState() == STATE_CLICKED)
+		else if(speedDownBtn.IsClickedByHand())
 		{
 			fceu_speed_multiplier <<= 1;
 			if (fceu_speed_multiplier > 32)
@@ -1637,7 +1634,7 @@ static int MenuGame()
 			w.SetEffect(EFFECT_FADE, -15);
 			usleep(350000); // wait for effects to finish
 		}
-		else if(quickSaveBtn.GetState() == STATE_CLICKED)
+		else if(quickSaveBtn.IsClickedByHand())
 		{
 			QuickSaveOrLoad (1); // Save
 
@@ -1660,7 +1657,7 @@ static int MenuGame()
 			w.SetEffect(EFFECT_FADE, -15);
 			usleep(350000); // wait for effects to finish
 		}
-		else if(quickLoadBtn.GetState() == STATE_CLICKED)
+		else if(quickLoadBtn.IsClickedByHand())
 		{
 			QuickSaveOrLoad (0); // Load
 

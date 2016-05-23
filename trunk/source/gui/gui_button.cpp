@@ -355,3 +355,19 @@ void GuiButton::Update(GuiTrigger * t)
 	if(updateCB)
 		updateCB(this);
 }
+
+bool GuiButton::IsClickedByHand()
+{
+	if (state == STATE_CLICKED)
+	{
+		if (effectTarget == effectTargetOver && effectAmount == effectAmountOver)
+		{
+			return true;
+		}
+		else
+		{
+			this->ResetState();
+		}
+	}
+	return false;
+}
