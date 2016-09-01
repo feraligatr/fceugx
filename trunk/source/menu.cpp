@@ -1059,7 +1059,7 @@ static int MenuGameSelection()
 	return menu;
 }
 
-static int QuickSaveOrLoad (int action)
+static int QuickSaveOrLoad (int action, int skip = 0)
 {
 	char filepath[1024];
 	int saveNum = 1;
@@ -1071,6 +1071,13 @@ static int QuickSaveOrLoad (int action)
 			break;
 		fclose (fp);
 		saveNum ++;
+	}
+	if (skip > 0 && saveNum > 1)
+	{
+		saveNum -= skip;
+		if (saveNum < 1)
+			saveNum = 1;
+		MakeFilePath(filepath, FILE_STATE, romFilename, saveNum);
 	}
 	if (action == 1) //save
 	{
@@ -1284,13 +1291,43 @@ static int MenuGame()
 	quickLoadBtn.SetTrigger(trig2);
 	quickLoadBtn.SetEffectGrow();
 
+	GuiText quickLoad1BtnTxt("读取上一个", 22, (GXColor){0, 0, 0, 255});
+	GuiImage quickLoad1BtnImg(&btnCloseOutline);
+	GuiImage quickLoad1BtnImgOver(&btnCloseOutlineOver);
+	GuiButton quickLoad1Btn(btnCloseOutline.GetWidth(), btnCloseOutline.GetHeight());
+	quickLoad1Btn.SetAlignment(ALIGN_CENTRE, ALIGN_TOP);
+	quickLoad1Btn.SetPosition(200, 290);
+	quickLoad1Btn.SetLabel(&quickLoad1BtnTxt);
+	quickLoad1Btn.SetImage(&quickLoad1BtnImg);
+	quickLoad1Btn.SetImageOver(&quickLoad1BtnImgOver);
+	quickLoad1Btn.SetSoundOver(&btnSoundOver);
+	quickLoad1Btn.SetSoundClick(&btnSoundClick);
+	quickLoad1Btn.SetTrigger(trigA);
+	quickLoad1Btn.SetTrigger(trig2);
+	quickLoad1Btn.SetEffectGrow();
+
+	GuiText quickLoad2BtnTxt("读取上上个", 22, (GXColor){0, 0, 0, 255});
+	GuiImage quickLoad2BtnImg(&btnCloseOutline);
+	GuiImage quickLoad2BtnImgOver(&btnCloseOutlineOver);
+	GuiButton quickLoad2Btn(btnCloseOutline.GetWidth(), btnCloseOutline.GetHeight());
+	quickLoad2Btn.SetAlignment(ALIGN_CENTRE, ALIGN_TOP);
+	quickLoad2Btn.SetPosition(200, 340);
+	quickLoad2Btn.SetLabel(&quickLoad2BtnTxt);
+	quickLoad2Btn.SetImage(&quickLoad2BtnImg);
+	quickLoad2Btn.SetImageOver(&quickLoad2BtnImgOver);
+	quickLoad2Btn.SetSoundOver(&btnSoundOver);
+	quickLoad2Btn.SetSoundClick(&btnSoundClick);
+	quickLoad2Btn.SetTrigger(trigA);
+	quickLoad2Btn.SetTrigger(trig2);
+	quickLoad2Btn.SetEffectGrow();
+
 	GuiText saveBtnTxt("Save", 22, (GXColor){0, 0, 0, 255});
 	GuiImage saveBtnImg(&btnCloseOutline);
 	GuiImage saveBtnImgOver(&btnCloseOutlineOver);
 	GuiImage saveBtnIcon(&iconSave);
 	GuiButton saveBtn(btnCloseOutline.GetWidth(), btnCloseOutline.GetHeight());
 	saveBtn.SetAlignment(ALIGN_CENTRE, ALIGN_TOP);
-	saveBtn.SetPosition(-150, 320);
+	saveBtn.SetPosition(-200, 320);
 	saveBtn.SetLabel(&saveBtnTxt);
 	saveBtn.SetImage(&saveBtnImg);
 	saveBtn.SetImageOver(&saveBtnImgOver);
@@ -1307,7 +1344,7 @@ static int MenuGame()
 	GuiImage loadBtnIcon(&iconLoad);
 	GuiButton loadBtn(btnCloseOutline.GetWidth(), btnCloseOutline.GetHeight());
 	loadBtn.SetAlignment(ALIGN_CENTRE, ALIGN_TOP);
-	loadBtn.SetPosition(-50, 320);
+	loadBtn.SetPosition(-100, 320);
 	loadBtn.SetLabel(&loadBtnTxt);
 	loadBtn.SetImage(&loadBtnImg);
 	loadBtn.SetImageOver(&loadBtnImgOver);
@@ -1324,7 +1361,7 @@ static int MenuGame()
 	GuiImage resetBtnIcon(&iconReset);
 	GuiButton resetBtn(btnCloseOutline.GetWidth(), btnCloseOutline.GetHeight());
 	resetBtn.SetAlignment(ALIGN_CENTRE, ALIGN_TOP);
-	resetBtn.SetPosition(50, 320);
+	resetBtn.SetPosition(0, 320);
 	resetBtn.SetLabel(&resetBtnTxt);
 	resetBtn.SetImage(&resetBtnImg);
 	resetBtn.SetImageOver(&resetBtnImgOver);
@@ -1342,7 +1379,7 @@ static int MenuGame()
 	GuiImage gameSettingsBtnIcon(&iconGameSettings);
 	GuiButton gameSettingsBtn(btnCloseOutline.GetWidth(), btnCloseOutline.GetHeight());
 	gameSettingsBtn.SetAlignment(ALIGN_CENTRE, ALIGN_TOP);
-	gameSettingsBtn.SetPosition(150, 320);
+	gameSettingsBtn.SetPosition(100, 320);
 	gameSettingsBtn.SetLabel(&gameSettingsBtnTxt);
 	gameSettingsBtn.SetImage(&gameSettingsBtnImg);
 	gameSettingsBtn.SetImageOver(&gameSettingsBtnImgOver);
@@ -1438,6 +1475,8 @@ static int MenuGame()
 	w.Append(&speedDownBtn);
 	w.Append(&quickSaveBtn);
 	w.Append(&quickLoadBtn);
+	w.Append(&quickLoad1Btn);
+	w.Append(&quickLoad2Btn);
 
 	#ifdef HW_RVL
 	w.Append(batteryBtn[0]);
@@ -1561,24 +1600,6 @@ static int MenuGame()
 		else if(closeBtn.GetState() == STATE_CLICKED)
 		{
 			menu = MENU_EXIT;
-
-			exitSound->Play();
-			bgTopImg->SetEffect(EFFECT_SLIDE_TOP | EFFECT_SLIDE_OUT, 15);
-			closeBtn.SetEffect(EFFECT_SLIDE_TOP | EFFECT_SLIDE_OUT, 15);
-			titleTxt.SetEffect(EFFECT_SLIDE_TOP | EFFECT_SLIDE_OUT, 15);
-			mainmenuBtn.SetEffect(EFFECT_SLIDE_BOTTOM | EFFECT_SLIDE_OUT, 15);
-			bgBottomImg->SetEffect(EFFECT_SLIDE_BOTTOM | EFFECT_SLIDE_OUT, 15);
-			btnLogo->SetEffect(EFFECT_SLIDE_BOTTOM | EFFECT_SLIDE_OUT, 15);
-			#ifdef HW_RVL
-			batteryBtn[0]->SetEffect(EFFECT_SLIDE_BOTTOM | EFFECT_SLIDE_OUT, 15);
-			batteryBtn[1]->SetEffect(EFFECT_SLIDE_BOTTOM | EFFECT_SLIDE_OUT, 15);
-			batteryBtn[2]->SetEffect(EFFECT_SLIDE_BOTTOM | EFFECT_SLIDE_OUT, 15);
-			batteryBtn[3]->SetEffect(EFFECT_SLIDE_BOTTOM | EFFECT_SLIDE_OUT, 15);
-			#endif
-
-			w.SetEffect(EFFECT_FADE, -15);
-
-			usleep(350000); // wait for effects to finish
 		}
 		else if(exitBtn.IsClickedByHand())
 		{
@@ -1589,80 +1610,37 @@ static int MenuGame()
 			fceu_speed_multiplier >>= 1;
 			if (fceu_speed_multiplier <= 0)
 				fceu_speed_multiplier = 1;
-
 			menu = MENU_EXIT;
-
-			exitSound->Play();
-			bgTopImg->SetEffect(EFFECT_SLIDE_TOP | EFFECT_SLIDE_OUT, 15);
-			closeBtn.SetEffect(EFFECT_SLIDE_TOP | EFFECT_SLIDE_OUT, 15);
-			titleTxt.SetEffect(EFFECT_SLIDE_TOP | EFFECT_SLIDE_OUT, 15);
-			mainmenuBtn.SetEffect(EFFECT_SLIDE_BOTTOM | EFFECT_SLIDE_OUT, 15);
-			bgBottomImg->SetEffect(EFFECT_SLIDE_BOTTOM | EFFECT_SLIDE_OUT, 15);
-			btnLogo->SetEffect(EFFECT_SLIDE_BOTTOM | EFFECT_SLIDE_OUT, 15);
-			#ifdef HW_RVL
-			batteryBtn[0]->SetEffect(EFFECT_SLIDE_BOTTOM | EFFECT_SLIDE_OUT, 15);
-			batteryBtn[1]->SetEffect(EFFECT_SLIDE_BOTTOM | EFFECT_SLIDE_OUT, 15);
-			batteryBtn[2]->SetEffect(EFFECT_SLIDE_BOTTOM | EFFECT_SLIDE_OUT, 15);
-			batteryBtn[3]->SetEffect(EFFECT_SLIDE_BOTTOM | EFFECT_SLIDE_OUT, 15);
-			#endif
-
-			w.SetEffect(EFFECT_FADE, -15);
-			usleep(350000); // wait for effects to finish
 		}
 		else if(speedDownBtn.IsClickedByHand())
 		{
 			fceu_speed_multiplier <<= 1;
 			if (fceu_speed_multiplier > 32)
 				fceu_speed_multiplier = 32;
-
 			menu = MENU_EXIT;
-
-			exitSound->Play();
-			bgTopImg->SetEffect(EFFECT_SLIDE_TOP | EFFECT_SLIDE_OUT, 15);
-			closeBtn.SetEffect(EFFECT_SLIDE_TOP | EFFECT_SLIDE_OUT, 15);
-			titleTxt.SetEffect(EFFECT_SLIDE_TOP | EFFECT_SLIDE_OUT, 15);
-			mainmenuBtn.SetEffect(EFFECT_SLIDE_BOTTOM | EFFECT_SLIDE_OUT, 15);
-			bgBottomImg->SetEffect(EFFECT_SLIDE_BOTTOM | EFFECT_SLIDE_OUT, 15);
-			btnLogo->SetEffect(EFFECT_SLIDE_BOTTOM | EFFECT_SLIDE_OUT, 15);
-			#ifdef HW_RVL
-			batteryBtn[0]->SetEffect(EFFECT_SLIDE_BOTTOM | EFFECT_SLIDE_OUT, 15);
-			batteryBtn[1]->SetEffect(EFFECT_SLIDE_BOTTOM | EFFECT_SLIDE_OUT, 15);
-			batteryBtn[2]->SetEffect(EFFECT_SLIDE_BOTTOM | EFFECT_SLIDE_OUT, 15);
-			batteryBtn[3]->SetEffect(EFFECT_SLIDE_BOTTOM | EFFECT_SLIDE_OUT, 15);
-			#endif
-
-			w.SetEffect(EFFECT_FADE, -15);
-			usleep(350000); // wait for effects to finish
 		}
 		else if(quickSaveBtn.IsClickedByHand())
 		{
 			QuickSaveOrLoad (1); // Save
-
 			menu = MENU_EXIT;
-
-			exitSound->Play();
-			bgTopImg->SetEffect(EFFECT_SLIDE_TOP | EFFECT_SLIDE_OUT, 15);
-			closeBtn.SetEffect(EFFECT_SLIDE_TOP | EFFECT_SLIDE_OUT, 15);
-			titleTxt.SetEffect(EFFECT_SLIDE_TOP | EFFECT_SLIDE_OUT, 15);
-			mainmenuBtn.SetEffect(EFFECT_SLIDE_BOTTOM | EFFECT_SLIDE_OUT, 15);
-			bgBottomImg->SetEffect(EFFECT_SLIDE_BOTTOM | EFFECT_SLIDE_OUT, 15);
-			btnLogo->SetEffect(EFFECT_SLIDE_BOTTOM | EFFECT_SLIDE_OUT, 15);
-			#ifdef HW_RVL
-			batteryBtn[0]->SetEffect(EFFECT_SLIDE_BOTTOM | EFFECT_SLIDE_OUT, 15);
-			batteryBtn[1]->SetEffect(EFFECT_SLIDE_BOTTOM | EFFECT_SLIDE_OUT, 15);
-			batteryBtn[2]->SetEffect(EFFECT_SLIDE_BOTTOM | EFFECT_SLIDE_OUT, 15);
-			batteryBtn[3]->SetEffect(EFFECT_SLIDE_BOTTOM | EFFECT_SLIDE_OUT, 15);
-			#endif
-
-			w.SetEffect(EFFECT_FADE, -15);
-			usleep(350000); // wait for effects to finish
 		}
 		else if(quickLoadBtn.IsClickedByHand())
 		{
 			QuickSaveOrLoad (0); // Load
-
 			menu = MENU_EXIT;
-
+		}
+		else if(quickLoad1Btn.IsClickedByHand())
+		{
+			QuickSaveOrLoad (0, 1); // Load last
+			menu = MENU_EXIT;
+		}
+		else if(quickLoad2Btn.IsClickedByHand())
+		{
+			QuickSaveOrLoad (0, 2); // Load last last
+			menu = MENU_EXIT;
+		}
+		if (menu == MENU_EXIT)
+		{
 			exitSound->Play();
 			bgTopImg->SetEffect(EFFECT_SLIDE_TOP | EFFECT_SLIDE_OUT, 15);
 			closeBtn.SetEffect(EFFECT_SLIDE_TOP | EFFECT_SLIDE_OUT, 15);
